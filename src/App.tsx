@@ -1,30 +1,49 @@
-import { Provider } from 'react-redux'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { addItem } from './src/store/cartSlice'
+import Header from './components/Header'
+import Produtos from './containers/Produtos'
+import { GlobalStyle } from './styles'
+import { useGetProductsQuery } from './src/store/apiSlice'
 
-import GLobalStyle, { Container } from './styles'
-import store from './store'
-import Home from './pages/Home'
-import Cadastro from './pages/Cadastro'
-
-const rotas = createBrowserRouter([
-  {
-    path: '/',
-    element: <Home />
-  },
-  {
-    path: '/novo',
-    element: <Cadastro />
-  }
-])
+export type Produto = {
+  id: number
+  nome: string
+  preco: number
+  imagem: string
+}
 
 function App() {
+  const dispatch = useDispatch()
+  const [favoritos, setFavoritos] = useState<Produto[]>([])
+  const { data: produtos = [] } = useGetProductsQuery()
+
+  function adicionarAoCarrinho(produto: Produto) {
+    dispatch(addItem(produto))
+  }
+
+  function favoritar(produto: Produto) {
+    if (favoritos.find((p) => p.id === produto.id)) {
+      const favoritosSemProduto = favoritos.filter((p) => p.id !== produto.id)
+      setFavoritos(favoritosSemProduto)
+    } else {
+      setFavoritos([...favoritos, produto])
+    }
+  }
+
   return (
-    <Provider store={store}>
-      <GLobalStyle />
-      <Container>
-        <RouterProvider router={rotas} />
-      </Container>
-    </Provider>
+    <>
+      <GlobalStyle />
+      <div className="container">
+        <Header favoritos={favoritos} />
+        <Produtos
+          produtos={produtos}
+          favoritos={favoritos}
+          favoritar={favoritar}
+          adicionarAoCarrinho={adicionarAoCarrinho}
+        />
+      </div>
+    </>
   )
 }
 
