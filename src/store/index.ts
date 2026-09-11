@@ -1,11 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit'
-import FiltroReducer from './reducers/Filtro'
-import atividadesReducer from './reducers/atividades'
+import { configureStore } from "@reduxjs/toolkit";
+import addReducer from "./reducers/contact"
 
 const store = configureStore({
   reducer: {
-    atividade: atividadesReducer,
-    filtro: FiltroReducer
+    contact: addReducer
   }
 })
 
