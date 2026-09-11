@@ -1,9 +1,13 @@
-import {SmartPhone} from '../../components/Smartphone'
-import { ContactList } from '../../components/ContactList'
-export function Home() {
-  return (
-    <SmartPhone>
-      <ContactList />
-    </SmartPhone>
-  )
-}
+import BotaoNovoContato from '../../components/BotaoFlutuante'
+import BarraSuperior from '../../containers/BarraSuperior'
+import ListaDeContatos from '../../containers/ListaDeContatos'
+
+const Home = () => (
+  <>
+    <BarraSuperior />
+    <ListaDeContatos />
+    <BotaoNovoContato />
+  </>
+)
+
+export default Home
